@@ -4,7 +4,7 @@
 
 //             <div>
 //               <button type="button">
-//                 {/* <svg>
+//                 <svg>
 //               <use
 //                 class="icon-burger"
 //                 href="./images/icons.svg#icon-burger"
@@ -13,7 +13,7 @@
 //                 class="icon-close icon-fixed"
 //                 href="./images/icons.svg#icon-close"
 //               ></use>
-//             </svg> */}
+//             </svg>
 //               </button>
 //               <img src="" alt="" />
 //             </div>

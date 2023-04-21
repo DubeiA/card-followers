@@ -16,19 +16,29 @@ export const UserList = () => {
   return (
     <div>
       {users && (
-        <ul>
+        <ul className={css.list}>
           {users.map(user => {
             return (
               <li key={user.id} className={css.containerItem}>
-                <div className={css.upperPart}>
-                  <div></div>
-                  {/* <button>Logo</button> */}
-                </div>
-                <div>
-                  <img src={user.avatar} alt={user.name}></img>
-                  <p>Follower: {user.followers}</p>
-                  <p>Tweets: {user.tweets}</p>
-                  <button type="button">Follow</button>
+                <div className={css.space}>
+                  <button type="button" className={css.imageLogo}></button>
+                  <div className={css.upperPart}></div>
+                  <div className={css.middleLine}>
+                    <img
+                      className={css.userFoto}
+                      src={user.avatar}
+                      alt={user.name}
+                    ></img>
+                  </div>
+                  <div className={css.lowerPart}>
+                    <p className={css.ps}> {user.tweets} Tweets</p>
+                    <p className={css.ps}>
+                      {' '}
+                      {user.followers.toLocaleString('en-US')} Follower
+                    </p>
+
+                    <button type="button">Follow</button>
+                  </div>
                 </div>
               </li>
             );
