@@ -34,10 +34,12 @@ export const UserList = () => {
                     <p className={css.ps}> {user.tweets} Tweets</p>
                     <p className={css.ps}>
                       {' '}
-                      {user.followers.toLocaleString('en-US')} Follower
+                      {user.followers.toLocaleString('en-US')} Followers
                     </p>
 
-                    <button type="button">Follow</button>
+                    <button className={css.btnFollow} type="button">
+                      Follow
+                    </button>
                   </div>
                 </div>
               </li>

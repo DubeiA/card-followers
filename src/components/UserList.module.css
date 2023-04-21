@@ -69,14 +69,14 @@
 
 .userFoto {
   position: relative;
-  top: -32px;
-  left: 160px;
-  width: 62px;
-  height: 62px;
+  top: -35px;
+  left: 155px;
+  width: 63px;
+  height: 63px;
   border-radius: 50%;
   background-color: #ebd8ff;
 
-  padding: 9px;
+  padding: 8px;
   box-shadow: 0px 4.39163px 4.39163px rgba(0, 0, 0, 0.06),
     inset 0px -2.19582px 4.39163px #ae7be3,
     inset 0px 4.39163px 3.29372px #fbf8ff;
@@ -101,4 +101,27 @@
 
   color: #ebd8ff;
   margin-bottom: 16px;
+}
+
+.btnFollow {
+  padding: 14px 56px;
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+
+  text-transform: uppercase;
+
+  color: #373737;
+
+  border-style: inherit;
+
+  background: #ebd8ff;
+  box-shadow: 0px 3.43693px 3.43693px rgba(0, 0, 0, 0.25);
+  border-radius: 10.3108px;
+
+  margin-top: 10px;
+  margin-bottom: 36px;
 }
