@@ -17,12 +17,10 @@ export const UserList = () => {
     setUsers(user);
   };
 
-  console.log(users);
-
-  const fetchNextPage = async firth => {
+  const fetchNextPage = async () => {
     setPage(prevPage => prevPage + 1);
     const usersNext = await nextPageUsers(page, 3);
-    setUsers(usersNext);
+    setUsers(prevUser => [...prevUser, ...usersNext]);
     if (page === 4) {
       setPage(1);
       await nextPageUsers(page, 3);
@@ -36,18 +34,19 @@ export const UserList = () => {
     getUsersFromAPI();
   }, []);
 
-  const handleFollowClick = id => {
+  const followind = (id, e) => {
+    // console.log(e.target.id);
     const userIdx = users.findIndex(user => user.id === id);
-    console.log(userIdx);
+
     if (userId === id) {
       setUserId(null);
       users[userIdx].followers--;
 
       return;
     }
+
     setUserId(id);
     users[userIdx].followers++;
-    // setPressTwice(false);
   };
 
   return (
@@ -77,11 +76,12 @@ export const UserList = () => {
                     </p>
 
                     <button
+                      id={user.id}
                       className={
                         userId === user.id ? css.btnPress : css.btnFollow
                       }
                       type="button"
-                      onClick={() => handleFollowClick(user.id)}
+                      onClick={e => followind(user.id, e)}
                     >
                       {userId === user.id ? 'Following' : 'Follow'}
                     </button>
@@ -93,7 +93,7 @@ export const UserList = () => {
         </ul>
       )}
       {page <= 4 && (
-        <button type="button" onClick={() => fetchNextPage()}>
+        <button type="button" onClick={fetchNextPage}>
           Next
         </button>
       )}
