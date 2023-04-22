@@ -4,6 +4,7 @@ import css from './UserList.module.css';
 
 export const UserList = () => {
   const [users, setUsers] = useState([]);
+  const [press, setPress] = useState(true);
 
   const getUsersFromAPI = async () => {
     const user = await fetchUsers();
@@ -12,6 +13,20 @@ export const UserList = () => {
   useEffect(() => {
     getUsersFromAPI();
   }, []);
+
+  const styleBtn = () => {
+    if (press) {
+      return css.btnFollow;
+    }
+    return css.btnPress;
+  };
+
+  const follow = () => {
+    if (press) {
+      setPress(false);
+    }
+    setPress(true);
+  };
 
   return (
     <div>
@@ -37,7 +52,11 @@ export const UserList = () => {
                       {user.followers.toLocaleString('en-US')} Followers
                     </p>
 
-                    <button className={css.btnFollow} type="button">
+                    <button
+                      className={styleBtn()}
+                      type="button"
+                      onClick={follow}
+                    >
                       Follow
                     </button>
                   </div>

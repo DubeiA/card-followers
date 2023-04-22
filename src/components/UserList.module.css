@@ -94,7 +94,7 @@
   padding: 0;
   font-family: 'Montserrat';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 5 00;
   font-size: 20px;
   line-height: 24px;
   text-transform: uppercase;
@@ -118,7 +118,36 @@
 
   border-style: inherit;
 
-  background: #ebd8ff;
+  background-color: #ebd8ff;
+  box-shadow: 0px 3.43693px 3.43693px rgba(0, 0, 0, 0.25);
+  border-radius: 10.3108px;
+
+  margin-top: 10px;
+  margin-bottom: 36px;
+
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btnFollow:hover {
+  background-color: #ae7be3;
+}
+
+.btnPress {
+  padding: 14px 56px;
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+
+  text-transform: uppercase;
+
+  color: #373737;
+
+  border-style: inherit;
+
+  background-color: #5cd3a8;
   box-shadow: 0px 3.43693px 3.43693px rgba(0, 0, 0, 0.25);
   border-radius: 10.3108px;
 
