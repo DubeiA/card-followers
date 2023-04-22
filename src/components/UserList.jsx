@@ -4,7 +4,11 @@ import css from './UserList.module.css';
 
 export const UserList = () => {
   const [users, setUsers] = useState([]);
-  const [press, setPress] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const [pressTwice, setPressTwice] = useState(false);
+  // const [followerCount, setFollowerCount] = useState(null);
+
+  console.log(pressTwice);
 
   const getUsersFromAPI = async () => {
     const user = await fetchUsers();
@@ -14,18 +18,14 @@ export const UserList = () => {
     getUsersFromAPI();
   }, []);
 
-  const styleBtn = () => {
-    if (press) {
-      return css.btnFollow;
+  const handleFollowClick = id => {
+    if (userId === id) {
+      setUserId(null);
+      setPressTwice(true);
+    } else {
+      setUserId(id);
+      setPressTwice(false);
     }
-    return css.btnPress;
-  };
-
-  const follow = () => {
-    if (press) {
-      setPress(false);
-    }
-    setPress(true);
   };
 
   return (
@@ -47,17 +47,21 @@ export const UserList = () => {
                   </div>
                   <div className={css.lowerPart}>
                     <p className={css.ps}> {user.tweets} Tweets</p>
+
                     <p className={css.ps}>
                       {' '}
-                      {user.followers.toLocaleString('en-US')} Followers
+                      {user.followers.toLocaleString('en-US')}
+                      Followers
                     </p>
 
                     <button
-                      className={styleBtn()}
+                      className={
+                        userId === user.id ? css.btnPress : css.btnFollow
+                      }
                       type="button"
-                      onClick={follow}
+                      onClick={() => handleFollowClick(user.id)}
                     >
-                      Follow
+                      {userId === user.id ? 'Following' : 'Follow'}
                     </button>
                   </div>
                 </div>
