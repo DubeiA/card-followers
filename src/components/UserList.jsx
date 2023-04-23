@@ -7,9 +7,6 @@ export const UserList = () => {
   const userFollowers = () => {
     return JSON.parse(window.localStorage.getItem('userFollowers')) ?? {};
   };
-  // const numberFolowers = () => {
-  //   return JSON.parse(window.localStorage.getItem('numberFolowers')) ?? {};
-  // };
 
   const [users, setUsers] = useState([]);
 
@@ -17,20 +14,11 @@ export const UserList = () => {
 
   const [usersFollowingIds, setUserFollowingIds] = useState(userFollowers());
 
-  // const [userFollower, setUserFollower] = useState(numberFolowers());
-
-  // console.log('userFollower', Object.values(userFollower));
-  // console.log('users', users);
-  // const value = Object.values(userFollower).map(o => o);
-  // const u = users.map(us => us.followers === value);
-  // console.log(u);
-
   useEffect(() => {
     window.localStorage.setItem(
       'userFollowers',
       JSON.stringify(usersFollowingIds)
     );
-    // window.localStorage.setItem('numberFolowers', JSON.stringify(userFollower));
   }, [usersFollowingIds]);
 
   const fetchNextPage = async () => {
