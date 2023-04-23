@@ -3,29 +3,30 @@ import { fetchUsers, nextPageUsers } from './api/usersAPI';
 import css from './UserList.module.css';
 
 export const UserList = () => {
-  const userBtn = () => {
-    return JSON.parse(window.localStorage.getItem('userBtn')) ?? false;
-  };
-  const userID = () => {
-    return JSON.parse(window.localStorage.getItem('userID')) ?? null;
-  };
   const userFollowers = () => {
     return JSON.parse(window.localStorage.getItem('userFollowers')) ?? null;
   };
+  const numberFolowers = () => {
+    return JSON.parse(window.localStorage.getItem('numberFolowers')) ?? null;
+  };
 
   const [users, setUsers] = useState([]);
-  const [userId, setUserId] = useState(userID());
-  const [page, setPage] = useState(2);
-  const [btnActive, setBtnActive] = useState(userBtn());
-  const [fol, setFo] = useState(userFollowers());
 
-  const [followerCount, setFollowerCount] = useState(null);
+  const [page, setPage] = useState(2);
+
+  const [usersFollowingIds, setUserFollowingIds] = useState(userFollowers());
+
+  const [fol, setFol] = useState(numberFolowers());
+
+  console.log(fol);
 
   useEffect(() => {
-    window.localStorage.setItem('userBtn', JSON.stringify(btnActive));
-    window.localStorage.setItem('userID', JSON.stringify(userId));
-    window.localStorage.setItem('userFollowers', JSON.stringify(fol));
-  }, [btnActive, userId, fol]);
+    window.localStorage.setItem(
+      'userFollowers',
+      JSON.stringify(usersFollowingIds)
+    );
+    window.localStorage.setItem('numberFolowers', JSON.stringify(fol));
+  }, [usersFollowingIds, fol]);
 
   const fetchNextPage = async () => {
     setPage(prevPage => prevPage + 1);
@@ -45,23 +46,35 @@ export const UserList = () => {
     })();
   }, []);
 
-  const followind = id => {
+  const followind = (id, followingStatus) => {
+    setUserFollowingIds(prevState => {
+      const newState = { ...prevState };
+
+      if (followingStatus) {
+        delete newState[id];
+      } else {
+        newState[id] = true;
+      }
+
+      return newState;
+    });
+
+    setUsers(prevState => {
+      return prevState.map(user => {
+        if (user.id === id) {
+          return {
+            ...user,
+            followers: followingStatus ? user.followers-- : user.followers++,
+          };
+        }
+
+        return user;
+      });
+    });
+
     const userIdx = users.findIndex(user => user.id === id);
 
-    if (userId === id) {
-      setUserId(null);
-
-      setFollowerCount(users[userIdx].followers--);
-
-      setFo(followerCount);
-      setBtnActive(false);
-      return;
-    }
-
-    setUserId(id);
-    setBtnActive(true);
-    setFollowerCount(users[userIdx].followers++);
-    setFo(followerCount);
+    setFol(users[userIdx].followers);
   };
 
   return (
@@ -69,6 +82,7 @@ export const UserList = () => {
       {users && (
         <ul className={css.list}>
           {users.map(user => {
+            const followingStatus = usersFollowingIds[user.id];
             return (
               <li key={user.id} className={css.containerItem}>
                 <div className={css.space}>
@@ -86,23 +100,17 @@ export const UserList = () => {
 
                     <p className={css.ps}>
                       {' '}
-                      {btnActive && userId === user.id
-                        ? fol
-                        : user.followers.toLocaleString('en-US')}
+                      {user.followers.toLocaleString('en-US')}
                       Followers
                     </p>
 
                     <button
                       id={user.id}
-                      className={
-                        btnActive && userId === user.id
-                          ? css.btnPress
-                          : css.btnFollow
-                      }
+                      className={followingStatus ? css.btnPress : css.btnFollow}
                       type="button"
-                      onClick={() => followind(user.id)}
+                      onClick={() => followind(user.id, followingStatus)}
                     >
-                      {userId === user.id ? 'Following' : 'Follow'}
+                      {followingStatus ? 'Following' : 'Follow'}
                     </button>
                   </div>
                 </div>

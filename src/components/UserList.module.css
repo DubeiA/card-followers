@@ -1,7 +1,3 @@
-.mainContainer {
-  text-align: center;
-}
-
 .list {
   display: flex;
   gap: 125px;
@@ -20,11 +16,8 @@
   );
   box-shadow: -2.5777px 6.87386px 20.6216px rgba(0, 0, 0, 0.23);
   border-radius: 20px;
-  /* width: 380px;
-  height: 460px; */
 
   align-items: center;
-  /* justify-content: center; */
 }
 
 .upperPart {
@@ -162,7 +155,7 @@
 
 .btnLoad {
   padding: 14px 56px;
-
+  margin-left: 47%;
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
