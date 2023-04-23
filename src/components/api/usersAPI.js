@@ -16,9 +16,11 @@ export async function nextPageUsers(page, limit) {
   return response.data;
 }
 
-// export async function addContact(data) {
-//   const response = await axios.post("users/", data);
-//   return response.data;
+// export async function userFollowers(id) {
+//   const response = await axios.put(`users/${id}`, {
+//     params: { page: 1, limit: 3 },
+//   });
+//   return console.log(response.data);
 // }
 
 // export async function deleteContact(id) {

@@ -3,27 +3,35 @@ import { fetchUsers, nextPageUsers } from './api/usersAPI';
 import css from './UserList.module.css';
 
 export const UserList = () => {
-  const [users, setUsers] = useState([]);
-  const [userId, setUserId] = useState(null);
-  const [page, setPage] = useState(2);
-  // const [pressTwice, setPressTwice] = useState(true);
-  // const [isFollow, setIsFollow] = useState(false);
-  // const [followerCount, setFollowerCount] = useState(null);
-
-  // console.log(pressTwice);
-
-  const getUsersFromAPI = async () => {
-    const user = await fetchUsers();
-    setUsers(user);
+  const userBtn = () => {
+    return JSON.parse(window.localStorage.getItem('userBtn')) ?? false;
   };
+  const userID = () => {
+    return JSON.parse(window.localStorage.getItem('userID')) ?? null;
+  };
+  const userFollowers = () => {
+    return JSON.parse(window.localStorage.getItem('userFollowers')) ?? null;
+  };
+
+  const [users, setUsers] = useState([]);
+  const [userId, setUserId] = useState(userID());
+  const [page, setPage] = useState(2);
+  const [btnActive, setBtnActive] = useState(userBtn());
+  const [fol, setFo] = useState(userFollowers());
+
+  const [followerCount, setFollowerCount] = useState(null);
+
+  useEffect(() => {
+    window.localStorage.setItem('userBtn', JSON.stringify(btnActive));
+    window.localStorage.setItem('userID', JSON.stringify(userId));
+    window.localStorage.setItem('userFollowers', JSON.stringify(fol));
+  }, [btnActive, userId, fol]);
 
   const fetchNextPage = async () => {
     setPage(prevPage => prevPage + 1);
     const usersNext = await nextPageUsers(page, 3);
     setUsers(prevUser => [...prevUser, ...usersNext]);
     if (page === 4) {
-      setPage(1);
-      await nextPageUsers(page, 3);
       return;
     }
 
@@ -31,26 +39,33 @@ export const UserList = () => {
   };
 
   useEffect(() => {
-    getUsersFromAPI();
+    (async () => {
+      const user = await fetchUsers();
+      setUsers(user);
+    })();
   }, []);
 
-  const followind = (id, e) => {
-    // console.log(e.target.id);
+  const followind = id => {
     const userIdx = users.findIndex(user => user.id === id);
 
     if (userId === id) {
       setUserId(null);
-      users[userIdx].followers--;
 
+      setFollowerCount(users[userIdx].followers--);
+
+      setFo(followerCount);
+      setBtnActive(false);
       return;
     }
 
     setUserId(id);
-    users[userIdx].followers++;
+    setBtnActive(true);
+    setFollowerCount(users[userIdx].followers++);
+    setFo(followerCount);
   };
 
   return (
-    <div>
+    <div className={css.mainContainer}>
       {users && (
         <ul className={css.list}>
           {users.map(user => {
@@ -71,17 +86,21 @@ export const UserList = () => {
 
                     <p className={css.ps}>
                       {' '}
-                      {user.followers.toLocaleString('en-US')}
+                      {btnActive && userId === user.id
+                        ? fol
+                        : user.followers.toLocaleString('en-US')}
                       Followers
                     </p>
 
                     <button
                       id={user.id}
                       className={
-                        userId === user.id ? css.btnPress : css.btnFollow
+                        btnActive && userId === user.id
+                          ? css.btnPress
+                          : css.btnFollow
                       }
                       type="button"
-                      onClick={e => followind(user.id, e)}
+                      onClick={() => followind(user.id)}
                     >
                       {userId === user.id ? 'Following' : 'Follow'}
                     </button>
@@ -93,7 +112,7 @@ export const UserList = () => {
         </ul>
       )}
       {page <= 4 && (
-        <button type="button" onClick={fetchNextPage}>
+        <button className={css.btnLoad} type="button" onClick={fetchNextPage}>
           Next
         </button>
       )}
