@@ -4,21 +4,20 @@ import css from './UserList.module.css';
 
 export const UserList = () => {
   const userFollowers = () => {
-    return JSON.parse(window.localStorage.getItem('userFollowers')) ?? null;
+    return JSON.parse(window.localStorage.getItem('userFollowers')) ?? {};
   };
   const numberFolowers = () => {
-    return JSON.parse(window.localStorage.getItem('numberFolowers')) ?? null;
+    return JSON.parse(window.localStorage.getItem('numberFolowers')) ?? {};
   };
 
   const [users, setUsers] = useState([]);
 
   const [page, setPage] = useState(2);
+  // const [active, setUserID] = useState(null);
 
   const [usersFollowingIds, setUserFollowingIds] = useState(userFollowers());
 
   const [fol, setFol] = useState(numberFolowers());
-
-  console.log(fol);
 
   useEffect(() => {
     window.localStorage.setItem(
@@ -62,19 +61,24 @@ export const UserList = () => {
     setUsers(prevState => {
       return prevState.map(user => {
         if (user.id === id) {
+          const newFollowers = followingStatus
+            ? user.followers - 1
+            : user.followers + 1;
+          setFol(prevState => {
+            return {
+              ...prevState,
+              [id]: newFollowers,
+            };
+          });
           return {
             ...user,
-            followers: followingStatus ? user.followers-- : user.followers++,
+            followers: newFollowers,
           };
         }
 
         return user;
       });
     });
-
-    const userIdx = users.findIndex(user => user.id === id);
-
-    setFol(users[userIdx].followers);
   };
 
   return (
@@ -83,6 +87,7 @@ export const UserList = () => {
         <ul className={css.list}>
           {users.map(user => {
             const followingStatus = usersFollowingIds[user.id];
+
             return (
               <li key={user.id} className={css.containerItem}>
                 <div className={css.space}>
@@ -100,7 +105,9 @@ export const UserList = () => {
 
                     <p className={css.ps}>
                       {' '}
-                      {user.followers.toLocaleString('en-US')}
+                      {followingStatus
+                        ? fol[user.id]
+                        : user.followers.toLocaleString('en-US')}
                       Followers
                     </p>
 
