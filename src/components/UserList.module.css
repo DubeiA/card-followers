@@ -1,9 +1,5 @@
 .mainContainer {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-
-  flex-direction: column;
+  text-align: center;
 }
 
 .list {

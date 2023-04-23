@@ -111,7 +111,7 @@ export const UserList = () => {
           })}
         </ul>
       )}
-      {page <= 4 && (
+      {users && page <= 4 && (
         <button className={css.btnLoad} type="button" onClick={fetchNextPage}>
           Next
         </button>
