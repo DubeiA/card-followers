@@ -1,31 +1,37 @@
 import { useState, useEffect } from 'react';
 import { fetchUsers, nextPageUsers } from './api/usersAPI';
 import css from './UserList.module.css';
+import axios from 'axios';
 
 export const UserList = () => {
   const userFollowers = () => {
     return JSON.parse(window.localStorage.getItem('userFollowers')) ?? {};
   };
-  const numberFolowers = () => {
-    return JSON.parse(window.localStorage.getItem('numberFolowers')) ?? {};
-  };
+  // const numberFolowers = () => {
+  //   return JSON.parse(window.localStorage.getItem('numberFolowers')) ?? {};
+  // };
 
   const [users, setUsers] = useState([]);
 
   const [page, setPage] = useState(2);
-  // const [active, setUserID] = useState(null);
 
   const [usersFollowingIds, setUserFollowingIds] = useState(userFollowers());
 
-  const [fol, setFol] = useState(numberFolowers());
+  // const [userFollower, setUserFollower] = useState(numberFolowers());
+
+  // console.log('userFollower', Object.values(userFollower));
+  // console.log('users', users);
+  // const value = Object.values(userFollower).map(o => o);
+  // const u = users.map(us => us.followers === value);
+  // console.log(u);
 
   useEffect(() => {
     window.localStorage.setItem(
       'userFollowers',
       JSON.stringify(usersFollowingIds)
     );
-    window.localStorage.setItem('numberFolowers', JSON.stringify(fol));
-  }, [usersFollowingIds, fol]);
+    // window.localStorage.setItem('numberFolowers', JSON.stringify(userFollower));
+  }, [usersFollowingIds]);
 
   const fetchNextPage = async () => {
     setPage(prevPage => prevPage + 1);
@@ -45,7 +51,7 @@ export const UserList = () => {
     })();
   }, []);
 
-  const followind = (id, followingStatus) => {
+  const following = (id, followingStatus) => {
     setUserFollowingIds(prevState => {
       const newState = { ...prevState };
 
@@ -64,12 +70,15 @@ export const UserList = () => {
           const newFollowers = followingStatus
             ? user.followers - 1
             : user.followers + 1;
-          setFol(prevState => {
-            return {
-              ...prevState,
-              [id]: newFollowers,
-            };
-          });
+
+          axios
+            .put(`users/${id}`, { followers: newFollowers })
+            .then(response => {
+              console.log(response.data);
+            })
+            .catch(error => {
+              console.error(error);
+            });
           return {
             ...user,
             followers: newFollowers,
@@ -105,9 +114,7 @@ export const UserList = () => {
 
                     <p className={css.ps}>
                       {' '}
-                      {followingStatus
-                        ? fol[user.id]
-                        : user.followers.toLocaleString('en-US')}
+                      {user.followers.toLocaleString('en-US')}
                       Followers
                     </p>
 
@@ -115,7 +122,7 @@ export const UserList = () => {
                       id={user.id}
                       className={followingStatus ? css.btnPress : css.btnFollow}
                       type="button"
-                      onClick={() => followind(user.id, followingStatus)}
+                      onClick={() => following(user.id, followingStatus)}
                     >
                       {followingStatus ? 'Following' : 'Follow'}
                     </button>

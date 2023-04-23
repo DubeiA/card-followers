@@ -6,6 +6,8 @@ export async function fetchUsers() {
   const response = await axios.get('users', {
     params: { page: 1, limit: 3 },
   });
+
+  console.log('response.data', response.data);
   return response.data;
 }
 
