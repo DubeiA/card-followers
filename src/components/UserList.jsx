@@ -21,6 +21,13 @@ export const UserList = () => {
     );
   }, [usersFollowingIds]);
 
+  useEffect(() => {
+    (async () => {
+      const user = await fetchUsers();
+      setUsers(user);
+    })();
+  }, []);
+
   const fetchNextPage = async () => {
     setPage(prevPage => prevPage + 1);
     const usersNext = await nextPageUsers(page, 3);
@@ -31,13 +38,6 @@ export const UserList = () => {
 
     return usersNext;
   };
-
-  useEffect(() => {
-    (async () => {
-      const user = await fetchUsers();
-      setUsers(user);
-    })();
-  }, []);
 
   const following = (id, followingStatus) => {
     setUserFollowingIds(prevState => {
@@ -61,9 +61,7 @@ export const UserList = () => {
 
           axios
             .put(`users/${id}`, { followers: newFollowers })
-            .then(response => {
-              console.log(response.data);
-            })
+            .then(response => response.data)
             .catch(error => {
               console.error(error);
             });

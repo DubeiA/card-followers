@@ -24,15 +24,3 @@ export async function nextPageUsers(page, limit) {
     console.log(err);
   }
 }
-
-// export async function userFollowers(id) {
-//   const response = await axios.put(`users/${id}`, {
-//     params: { page: 1, limit: 3 },
-//   });
-//   return console.log(response.data);
-// }
-
-// export async function deleteContact(id) {
-//   const response = await axios.delete(`contacts/${id}`);
-//   return response.data;
-// }
