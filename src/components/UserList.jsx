@@ -8,7 +8,7 @@ export const UserList = () => {
     return JSON.parse(window.localStorage.getItem('userFollowers')) ?? {};
   };
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
 
   const [page, setPage] = useState(2);
 
@@ -80,7 +80,7 @@ export const UserList = () => {
 
   return (
     <div className={css.mainContainer}>
-      {users && (
+      {users ? (
         <ul className={css.list}>
           {users.map(user => {
             const followingStatus = usersFollowingIds[user.id];
@@ -120,6 +120,8 @@ export const UserList = () => {
             );
           })}
         </ul>
+      ) : (
+        <div className={css.loader5}></div>
       )}
       {users && page <= 4 && (
         <button className={css.btnLoad} type="button" onClick={fetchNextPage}>
