@@ -93,6 +93,8 @@ export const UserList = () => {
                       className={css.userFoto}
                       src={user.avatar}
                       alt={user.name}
+                      width={63}
+                      height={63}
                     ></img>
                   </div>
                   <div className={css.lowerPart}>

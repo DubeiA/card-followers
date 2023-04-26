@@ -62,8 +62,7 @@
   position: relative;
   top: -35px;
   left: 155px;
-  width: 63px;
-  height: 63px;
+
   border-radius: 50%;
   background-color: #ebd8ff;
 
@@ -95,6 +94,7 @@
 }
 
 .btnFollow {
+  cursor: pointer;
   padding: 14px 56px;
 
   font-family: 'Montserrat';
@@ -124,6 +124,7 @@
 }
 
 .btnPress {
+  cursor: pointer;
   padding: 14px 56px;
 
   font-family: 'Montserrat';
@@ -168,6 +169,8 @@
 
   margin-top: 20px;
   justify-content: center;
+
+  cursor: pointer;
 }
 
 /* Loader */
