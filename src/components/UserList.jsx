@@ -86,7 +86,13 @@ export const UserList = () => {
             return (
               <li key={user.id} className={css.containerItem}>
                 <div className={css.space}>
-                  <button type="button" className={css.imageLogo}></button>
+                  <a
+                    href="https://m.goit.global/ua/new/"
+                    className={css.imageLogo}
+                  >
+                    {' '}
+                  </a>
+
                   <div className={css.upperPart}></div>
                   <div className={css.middleLine}>
                     <img
